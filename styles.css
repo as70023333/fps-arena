@@ -1,0 +1,275 @@
+:root {
+  --bg-1: #090b14;
+  --bg-2: #101b2f;
+  --ink: #d8ecff;
+  --accent: #29f0b4;
+  --danger: #ff5f7f;
+  --warning: #ffb84a;
+  --panel: rgba(6, 10, 22, 0.68);
+  --line: rgba(216, 236, 255, 0.16);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  color: var(--ink);
+  font-family: "Rajdhani", sans-serif;
+  background: radial-gradient(circle at 15% 20%, #1a2f54, transparent 36%),
+    radial-gradient(circle at 85% 75%, #1f2b50, transparent 40%),
+    linear-gradient(135deg, var(--bg-1), var(--bg-2));
+}
+
+body {
+  position: relative;
+}
+
+.bg-grid {
+  position: fixed;
+  inset: 0;
+  background-image: linear-gradient(rgba(41, 240, 180, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(41, 240, 180, 0.08) 1px, transparent 1px);
+  background-size: 38px 38px;
+  mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+  pointer-events: none;
+}
+
+.vignette {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at center, transparent 55%, rgba(0, 0, 0, 0.64));
+  pointer-events: none;
+}
+
+.top-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  background: linear-gradient(to right, rgba(2, 6, 18, 0.85), rgba(2, 6, 18, 0.35));
+  border-bottom: 1px solid var(--line);
+  backdrop-filter: blur(6px);
+}
+
+.top-bar h1 {
+  margin: 0;
+  font-family: "Orbitron", sans-serif;
+  font-size: clamp(1.05rem, 2.6vw, 1.75rem);
+  font-weight: 900;
+  letter-spacing: 0.11em;
+}
+
+.top-bar p {
+  margin: 0;
+  font-size: clamp(0.85rem, 1.8vw, 1rem);
+  color: #bfd8ef;
+}
+
+.score-strip {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.35rem 0.55rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(3, 9, 20, 0.62);
+  font-family: "Orbitron", sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+}
+
+#roundText {
+  color: #ffe3a6;
+}
+
+#scoreText {
+  color: #aef7de;
+}
+
+#matchText {
+  color: #ffcab2;
+}
+
+#ammoText {
+  color: #c5d8ff;
+}
+
+main,
+#gameContainer {
+  width: 100%;
+  height: 100%;
+}
+
+#gameContainer canvas {
+  display: block;
+}
+
+.hud {
+  position: fixed;
+  left: 1rem;
+  bottom: 1rem;
+  z-index: 10;
+  display: grid;
+  gap: 0.6rem;
+  width: min(340px, calc(100vw - 2rem));
+}
+
+.panel {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 0.55rem;
+  align-items: center;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 0.5rem 0.65rem;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.28);
+}
+
+.label {
+  font-family: "Orbitron", sans-serif;
+  font-size: 0.74rem;
+  letter-spacing: 0.09em;
+}
+
+.bar-shell {
+  width: 100%;
+  height: 12px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.bar {
+  width: 100%;
+  height: 100%;
+  transition: width 120ms linear;
+}
+
+.bar.player {
+  background: linear-gradient(90deg, #1dbf9f, var(--accent));
+}
+
+.bar.enemy {
+  background: linear-gradient(90deg, #ff9e5b, var(--danger));
+}
+
+.value {
+  min-width: 2.2rem;
+  text-align: right;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.reticle {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  width: 22px;
+  height: 22px;
+  transform: translate(-50%, -50%);
+  border: 1.5px solid rgba(216, 236, 255, 0.65);
+  border-radius: 50%;
+  box-shadow: 0 0 18px rgba(41, 240, 180, 0.35);
+  z-index: 9;
+  pointer-events: none;
+}
+
+.reticle::before,
+.reticle::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  background: rgba(216, 236, 255, 0.78);
+  transform: translate(-50%, -50%);
+}
+
+.reticle::before {
+  width: 2px;
+  height: 12px;
+}
+
+.reticle::after {
+  width: 12px;
+  height: 2px;
+}
+
+.status-overlay {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  z-index: 20;
+  background: rgba(0, 0, 0, 0.58);
+}
+
+.status-overlay.hidden {
+  display: none;
+}
+
+.card {
+  width: min(92vw, 430px);
+  border-radius: 18px;
+  padding: 1.25rem;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: linear-gradient(160deg, rgba(7, 13, 31, 0.92), rgba(16, 34, 45, 0.95));
+  text-align: center;
+}
+
+.card h2 {
+  margin: 0;
+  font-family: "Orbitron", sans-serif;
+  letter-spacing: 0.08em;
+}
+
+.card p {
+  color: #cce3f8;
+}
+
+button {
+  font-family: "Rajdhani", sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: #04121f;
+  background: linear-gradient(120deg, var(--warning), #ffe17a);
+  border: none;
+  border-radius: 999px;
+  padding: 0.55rem 1.1rem;
+  cursor: pointer;
+}
+
+button:hover {
+  filter: brightness(1.06);
+}
+
+@media (max-width: 760px) {
+  .top-bar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .score-strip {
+    flex-wrap: wrap;
+  }
+
+  .hud {
+    left: 0.6rem;
+    right: 0.6rem;
+    width: auto;
+  }
+}
